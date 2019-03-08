@@ -12,23 +12,10 @@ public class CrewDAO {
     //*******************************
     public static ObservableList<Crew> searchCrew (String input, String param) throws SQLException {
         //Declare a SELECT statement
-        String selectStmt = "";
         String basic = "SELECT * FROM Crew where %s=%s";
+        String selectStmt = formatCrewString(input, basic, param);
         /*String selectStmt = "SELECT * FROM Crew WHERE ID="+crewID;*/
-        switch(param){
-            case "ID":
-            case "yrs_of_exp":
-            case "S_id":
-            case "age":
-            case "F_id":
-            case "P_id":
-                selectStmt = String.format(basic, param, Integer.parseInt(input));
-                break;
-            case "E_name":
-            case "sex":
-                selectStmt = String.format(basic, param, "\'"+ input + "\'");
-                break;
-        }
+
         //Execute SELECT statement
         try {
             //Get ResultSet from dbExecuteQuery method
@@ -73,10 +60,9 @@ public class CrewDAO {
         String updateStmt =
                 "BEGIN\n" +
                         "INSERT INTO Crew\n" +
-
                         "VALUES\n" +
-                        "("+details[0]+", '"+details[1]+"',"+details[2]+","+ details[3]+ ",'"+details[4]+"',"
-                            +details[5]+","+details[6]+","+details[7]+");\n" +
+                        "("+details[0]+", '"+details[1]+"',"+details[2]+","+ details[3]+ ","+details[4]+","
+                            +details[5]+","+details[6]+",'"+details[7]+"');\n" +
                         "END;";
         System.out.println(updateStmt);
         //Execute DELETE operation
@@ -123,6 +109,24 @@ public class CrewDAO {
         return crewList;
     }
 
+    public static String formatCrewString(String input, String basic, String param){
+        String selectStmt = "";
+        switch(param){
+            case "ID":
+            case "yrs_of_exp":
+            case "S_id":
+            case "age":
+            case "F_id":
+            case "P_id":
+                selectStmt = String.format(basic, param, Integer.parseInt(input));
+                break;
+            case "E_name":
+            case "sex":
+                selectStmt = String.format(basic, param, "\'"+ input + "\'");
+                break;
+        }
+        return selectStmt;
+    }
 
 
 

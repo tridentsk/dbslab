@@ -4,6 +4,7 @@ import com.sun.rowset.CachedRowSetImpl;
 
 import java.sql.*;
 
+
 public class DBUtil {
     //Declare JDBC Driver
     private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -12,7 +13,7 @@ public class DBUtil {
     private static Connection conn = null;
 
     //Connect to DB
-    public static void dbConnect() throws SQLException {
+    public static void dbConnect() {
         //Setting Oracle JDBC Driver
         try {
             Class.forName(JDBC_DRIVER);

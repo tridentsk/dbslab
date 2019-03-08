@@ -33,9 +33,9 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
 
             //Second, show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout); //We are sending rootLayout to the Scene.
+            Scene scene = new Scene(rootLayout,655,495); //We are sending rootLayout to the Scene.
             primaryStage.setScene(scene); //Set the scene in primary stage.
-
+            primaryStage.setResizable(false);
             /*//Give the controller access to the main.
             RootLayoutController controller = loader.getController();
             controller.setMain(this);*/
