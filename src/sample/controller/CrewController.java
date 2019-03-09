@@ -5,19 +5,24 @@ import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import sample.model.Crew;
 import sample.model.CrewDAO;
 import sample.model.Post;
 import sample.model.PostDAO;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CrewController {
     @FXML
@@ -84,6 +89,8 @@ public class CrewController {
     private TableView<Post> postTable;
     @FXML
     private AnchorPane postTab;
+    @FXML
+    private Button fkn;
 
     @FXML
     private void searchPost (ActionEvent actionEvent) throws SQLException {
@@ -167,6 +174,39 @@ public class CrewController {
         crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().S_idProperty().asObject());
         crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().F_idProperty().asObject());
         crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
+        crewTable.setRowFactory(tv -> {
+            TableRow<Crew> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    Crew rowData = row.getItem();
+                    System.out.println(rowData);
+                    crewIDText.setText(Integer.toString(rowData.getID()));
+                    crewNameText.setText(rowData.getE_Name());
+                    crewAgeText.setText(Integer.toString(rowData.getage()));
+                    crewYrsText.setText(Integer.toString(rowData.getyrs_of_exp()));
+                    crewSexText.setText(rowData.getsex());
+                    crewSIDText.setText(Integer.toString(rowData.getS_id()));
+                    crewPIDText.setText(Integer.toString(rowData.getP_id()));
+                    crewFIDText.setText(Integer.toString(rowData.getF_id()));
+                }
+            });
+            return row ;
+        });
+
+        fkn.setOnMouseClicked((event) -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("../customWindow.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                Stage stage = new Stage();
+                stage.setTitle("New Window");
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Failed to create new Window.", e);
+            }
+        });
 
         ObservableList<String> paramlist = FXCollections.observableArrayList(
                 "ID",
@@ -313,7 +353,10 @@ public class CrewController {
         searchparam.setItems(paramlist);
         searchparam.setValue("ID");
     }*/
-
+   @FXML
+    private int crewShowAll(){
+        return 0;
+    }
     private String parseParam(String param){
         switch(param){
             case "ID":
@@ -336,4 +379,6 @@ public class CrewController {
         return "";
     }
 
+
 }
+
