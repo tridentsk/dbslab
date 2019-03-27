@@ -54,8 +54,8 @@
                         <Label layoutX="301.0" layoutY="339.0" text="Age" />
                         <Label layoutX="14.0" layoutY="302.0" text="Search by" />
                         <Button fx:id="clearCrewbtn" layoutX="501.0" layoutY="375.0" mnemonicParsing="false" onAction="#clearTexts" text="Clear" />
-                        <Button fx:id="crewShowAllbtn" layoutX="67.0" layoutY="258.0" mnemonicParsing="false" onAction="#crewShowAll" text="Show All" />
-                        <Button fx:id="fkn" layoutX="168.0" layoutY="250.0" mnemonicParsing="false" text="Button" />
+                        <Button fx:id="crewShowAllbtn" layoutX="100.0" layoutY="258.0" mnemonicParsing="false" onAction="#crewShowAll" text="Show All" />
+                        <Button fx:id="fkn" layoutX="476.0" layoutY="411.0" mnemonicParsing="false" onAction="#openCustomWindow" text="Custom Query" />
                      </children>
                   </AnchorPane>
             </content>
@@ -72,22 +72,10 @@
                               <TableColumn fx:id="postYearsColumn" prefWidth="81.0" text="Years Reqd" />
                            </columns>
                         </TableView>
-                        <Button fx:id="deletePostbtn" layoutX="195.0" layoutY="394.0" mnemonicParsing="false" onAction="#deletePost" prefHeight="25.0" prefWidth="56.0" text="Delete" />
-                        <TextField fx:id="postSearchText" layoutX="19.0" layoutY="335.0" prefHeight="25.0" prefWidth="120.0" promptText="Enter search key" />
-                        <Button fx:id="insertPostbtn" layoutX="32.0" layoutY="394.0" mnemonicParsing="false" onAction="#insertPost" text="Add Crew" />
-                        <Button fx:id="updatePostbtn" layoutX="115.0" layoutY="394.0" mnemonicParsing="false" onAction="#updatePost" prefHeight="25.0" prefWidth="67.0" text="Update" />
-                        <Button fx:id="searchPostbtn" layoutX="154.0" layoutY="335.0" mnemonicParsing="false" onAction="#searchPost" prefHeight="25.0" prefWidth="56.0" text="Search" />
-                        <ComboBox fx:id="postSearch" layoutX="79.0" layoutY="298.0" prefWidth="150.0" />
-                        <Label layoutX="14.0" layoutY="302.0" text="Search by" />
-                        <TextField fx:id="postIDText" layoutX="365.0" layoutY="290.0" prefHeight="25.0" prefWidth="67.0" promptText="Post ID" />
-                        <Label layoutX="312.0" layoutY="294.0" text="Post ID" />
-                        <TextField fx:id="postNameText" layoutX="365.0" layoutY="323.0" prefHeight="25.0" prefWidth="67.0" promptText="Post Name" />
-                        <Label layoutX="292.0" layoutY="327.0" text="Post Name" />
-                        <TextField fx:id="postyrs_of_exp_reqText" layoutX="520.0" layoutY="323.0" prefHeight="25.0" prefWidth="67.0" promptText="Years" />
-                        <Label layoutX="448.0" layoutY="327.0" text="Years of Exp" />
-                        <TextField fx:id="postsalaryText" layoutX="520.0" layoutY="290.0" prefHeight="25.0" prefWidth="67.0" promptText="Salary" />
-                        <Label layoutX="467.0" layoutY="294.0" text="Salary" />
-                        <Button fx:id="clearPostTextsbtn" layoutX="446.0" layoutY="382.0" mnemonicParsing="false" onAction="#clearPostTexts" text="Clear" />
+                        <Button fx:id="postShowAllbtn" layoutX="20.0" layoutY="284.0" mnemonicParsing="false" onAction="#postShowAll" text="List available posts" />
+                        <Button fx:id="crewSearchbyPostbtn" layoutX="189.0" layoutY="369.0" mnemonicParsing="false" onAction="#crewSearchbyPost" text="Search" />
+                        <ComboBox fx:id="postSearch" layoutX="140.0" layoutY="335.0" prefWidth="150.0" />
+                        <Label layoutX="20.0" layoutY="339.0" text="Search crew by post" />
                      </children></AnchorPane>
             </content>
           </Tab>

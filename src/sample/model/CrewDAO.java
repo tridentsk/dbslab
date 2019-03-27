@@ -89,7 +89,7 @@ public class CrewDAO {
         }*/
     }
     //Use ResultSet from DB as parameter and set Crew Object's attributes and return Crew object.
-    private static ObservableList<Crew> getCrewList(ResultSet rs) throws SQLException
+    public static ObservableList<Crew> getCrewList(ResultSet rs) throws SQLException
     {
         ObservableList<Crew> crewList = FXCollections.observableArrayList();
 
@@ -97,13 +97,13 @@ public class CrewDAO {
             Crew crw = new Crew();
             crw.setID(rs.getInt("ID"));
             //System.out.println(rs.getInt("ID"));
-            crw.setE_Name(rs.getString("E_NAME"));
+            crw.setcrew_name(rs.getString("crew_name"));
             crw.setage(rs.getInt("AGE"));
             crw.setyrs_of_exp(rs.getInt("YRS_OF_EXP"));
             crw.setsex(rs.getString("SEX"));
-            crw.setS_id(rs.getInt("S_ID"));
-            crw.setF_id(rs.getInt("F_ID"));
-            crw.setP_id(rs.getInt("P_ID"));
+            crw.setship_id(rs.getInt("ship_id"));
+            crw.setfaction_id(rs.getInt("faction_id"));
+            crw.setpost_id(rs.getInt("post_id"));
             crewList.add(crw);
         }
         return crewList;
@@ -114,13 +114,13 @@ public class CrewDAO {
         switch(param){
             case "ID":
             case "yrs_of_exp":
-            case "S_id":
+            case "ship_id":
             case "age":
-            case "F_id":
-            case "P_id":
+            case "faction_id":
+            case "post_id":
                 selectStmt = String.format(basic, param, Integer.parseInt(input));
                 break;
-            case "E_name":
+            case "crew_name":
             case "sex":
                 selectStmt = String.format(basic, param, "\'"+ input + "\'");
                 break;

@@ -41,7 +41,7 @@ public class PostDAO {
 
         while (rs.next()) {
             Post pst = new Post();
-            pst.setP_id(rs.getInt("P_ID"));
+            pst.setP_id(rs.getInt("post_id"));
             pst.setP_name(rs.getString("P_NAME"));
             pst.setsalary(rs.getInt("SALARY"));
             pst.setyrs_of_exp_req(rs.getInt("YRS_OF_EXP_REQ"));
@@ -53,7 +53,7 @@ public class PostDAO {
     public static String formatPostString(String input, String basic, String param){
         String selectStmt = "";
         switch(param){
-            case "P_id":
+            case "post_id":
             case "yrs_of_exp_req":
             case "salary":
                 selectStmt = String.format(basic, param, Integer.parseInt(input));
@@ -86,18 +86,18 @@ public class PostDAO {
     //*************************************
     //DELETE a post
     //*************************************
-    public static void deletePost (String P_id) throws SQLException{
+    public static void deletePost (String post_id) throws SQLException{
         //Declare a DELETE statement
         String updateStmt =
                 "BEGIN\n" +
                         "   DELETE FROM Post\n" +
-                        "         WHERE P_id ="+ P_id +";\n" +
+                        "         WHERE post_id ="+ post_id +";\n" +
                         "   COMMIT;\n" +
                         "END;";
         //Execute UPDATE operation
         try {
             DBUtil.dbExecuteUpdate(updateStmt);
-            System.out.println("Post with ID="+ P_id + " deleted.");
+            System.out.println("Post with ID="+ post_id + " deleted.");
         } catch (SQLException e) {
             System.out.print("Error occurred while DELETE Operation: " + e);
             throw e;

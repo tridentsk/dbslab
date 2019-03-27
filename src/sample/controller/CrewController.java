@@ -1,5 +1,7 @@
 package sample.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -12,17 +14,23 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import sample.model.Crew;
 import sample.model.CrewDAO;
 import sample.model.Post;
 import sample.model.PostDAO;
+import sample.util.DBUtil;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static sample.util.DBUtil.dbExecuteQuery;
 
 public class CrewController {
     @FXML
@@ -89,8 +97,6 @@ public class CrewController {
     private TableView<Post> postTable;
     @FXML
     private AnchorPane postTab;
-    @FXML
-    private Button fkn;
 
     @FXML
     private void searchPost (ActionEvent actionEvent) throws SQLException {
@@ -121,7 +127,7 @@ public class CrewController {
         try {
             PostDAO.insertPost(getAllPostDetails());
 
-            ObservableList<Post> pst = PostDAO.searchPost(postIDText.getText(), "P_id");
+            ObservableList<Post> pst = PostDAO.searchPost(postIDText.getText(), "post_id");
             populatePost(pst);
             clearPostTexts();
         } catch (SQLException e) {
@@ -133,7 +139,7 @@ public class CrewController {
     private void updatePost(ActionEvent actionEvent) throws ClassNotFoundException{
         try {
             PostDAO.updatePost(getAllPostDetails());
-            ObservableList<Post> pst = PostDAO.searchPost(getAllPostDetails()[0], "P_id");
+            ObservableList<Post> pst = PostDAO.searchPost(getAllPostDetails()[0], "post_id");
             clearPostTexts();
             populatePost(pst);
         } catch (SQLException e) {
@@ -167,13 +173,13 @@ public class CrewController {
     @FXML
     private void initialize() {
         crewIDColumn.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
-        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().E_NameProperty());
+        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().crew_nameProperty());
         crewAgeColumn.setCellValueFactory(cellData -> cellData.getValue().ageProperty().asObject());
         crewYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_expProperty().asObject());
         crewSexColumn.setCellValueFactory(cellData -> cellData.getValue().sexProperty());
-        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().S_idProperty().asObject());
-        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().F_idProperty().asObject());
-        crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
+        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().ship_idProperty().asObject());
+        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().faction_idProperty().asObject());
+        crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().post_idProperty().asObject());
         crewTable.setRowFactory(tv -> {
             TableRow<Crew> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -181,23 +187,25 @@ public class CrewController {
                     Crew rowData = row.getItem();
                     System.out.println(rowData);
                     crewIDText.setText(Integer.toString(rowData.getID()));
-                    crewNameText.setText(rowData.getE_Name());
+                    crewNameText.setText(rowData.getcrew_name());
                     crewAgeText.setText(Integer.toString(rowData.getage()));
                     crewYrsText.setText(Integer.toString(rowData.getyrs_of_exp()));
                     crewSexText.setText(rowData.getsex());
-                    crewSIDText.setText(Integer.toString(rowData.getS_id()));
-                    crewPIDText.setText(Integer.toString(rowData.getP_id()));
-                    crewFIDText.setText(Integer.toString(rowData.getF_id()));
+                    crewSIDText.setText(Integer.toString(rowData.getship_id()));
+                    crewPIDText.setText(Integer.toString(rowData.getpost_id()));
+                    crewFIDText.setText(Integer.toString(rowData.getfaction_id()));
                 }
             });
             return row ;
         });
 
-        fkn.setOnMouseClicked((event) -> {
+
+        /*fkn.setOnMouseClicked((event) -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("../customWindow.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                AnchorPane customStage = (AnchorPane) fxmlLoader.load();
+                Scene scene = new Scene(customStage, 600, 400);
                 Stage stage = new Stage();
                 stage.setTitle("New Window");
                 stage.setScene(scene);
@@ -206,7 +214,7 @@ public class CrewController {
                 Logger logger = Logger.getLogger(getClass().getName());
                 logger.log(Level.SEVERE, "Failed to create new Window.", e);
             }
-        });
+        });*/
 
         ObservableList<String> paramlist = FXCollections.observableArrayList(
                 "ID",
@@ -218,13 +226,25 @@ public class CrewController {
                 "Faction ID",
                 "Port ID"
         );
+
+        ObservableList<String> postlist = FXCollections.observableArrayList(
+          "Captain",
+          "1st Mate",
+                "Cook",
+                "Officer",
+                "Medic",
+                "Engineer",
+                "Seaman"
+        );
         searchparam.setItems(paramlist);
         searchparam.setValue("ID");
+        postSearch.setItems(postlist);
+        postSearch.setValue("Captain");
         postIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
         postNameColumn.setCellValueFactory(cellData -> cellData.getValue().P_nameProperty());
         postSalaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
         postYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_exp_reqProperty().asObject());
-        paramlist = FXCollections.observableArrayList(
+        /*paramlist = FXCollections.observableArrayList(
                 "Post ID",
                 "Name",
                 "Salary",
@@ -232,13 +252,30 @@ public class CrewController {
         );
 
         postSearch.setItems(paramlist);
-        postSearch.setValue("Post ID");
+        postSearch.setValue("Post ID");*/
     }
 
+    @FXML
+    private void openCustomWindow(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("customWindow.fxml"));
+            AnchorPane customStage = (AnchorPane) fxmlLoader.load();
+            Scene scene = new Scene(customStage, 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Custom Query");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
+    }
     private String parsePostParam(String param){
         switch(param){
             case "Post ID":
-                return "P_id";
+                return "post_id";
             case "Name":
                 return "P_name";
             case "Salary":
@@ -332,12 +369,12 @@ public class CrewController {
    /* @FXML
     private void initialize () {
         crewIDColumn.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
-        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().E_NameProperty());
+        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().crew_nameProperty());
         crewAgeColumn.setCellValueFactory(cellData -> cellData.getValue().ageProperty().asObject());
         crewYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_expProperty().asObject());
         crewSexColumn.setCellValueFactory(cellData -> cellData.getValue().sexProperty());
-        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().S_idProperty().asObject());
-        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().F_idProperty().asObject());
+        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().ship_idProperty().asObject());
+        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().faction_idProperty().asObject());
         crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
 
         ObservableList<String> paramlist = FXCollections.observableArrayList(
@@ -354,15 +391,62 @@ public class CrewController {
         searchparam.setValue("ID");
     }*/
    @FXML
-    private int crewShowAll(){
+    private void crewShowAll() throws SQLException{
+
+       String stmt = "select * from crew";
+       ResultSet rs = DBUtil.dbExecuteQuery(stmt);
+       ObservableList<Crew> crewList = CrewDAO.getCrewList(rs);
+       populateCrew(crewList);
+
+    }
+
+    @FXML
+    private void postShowAll() throws SQLException{
+        String qry = "select * from post";
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        ResultSet rs=null;
+            rs = dbExecuteQuery(qry);
+            CustomController.fillTableWithRS(rs, postTable);
+       return;
+    }
+    @FXML
+    private void crewSearchbyPost() throws SQLException{
+        String qry = "select * from crew where post_id=" + "\'"+ Integer.toString(parsePost()) +"\'";
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        ResultSet rs = null;
+        rs = dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, postTable);
+       return;
+    }
+
+    private int parsePost(){
+        String s = postSearch.getValue();
+
+        switch(s){
+            case "Captain":
+                return 1;
+            case "1st Mate":
+                return 2;
+            case "Cook":
+                return 3;
+            case "Officer":
+                return 4;
+            case "Medic":
+                return 5;
+            case "Engineer":
+                return 6;
+            case "Seaman":
+                return 7;
+        }
         return 0;
+
     }
     private String parseParam(String param){
         switch(param){
             case "ID":
                 return "ID";
             case "Name":
-                return "E_name";
+                return "crew_name";
             case "Age":
                 return "age";
             case "Years of Exp":
@@ -370,11 +454,11 @@ public class CrewController {
             case "Sex":
                 return "sex";
             case "Ship ID":
-                return "S_id";
+                return "ship_id";
             case "Faction ID":
-                return "F_id";
+                return "faction_id";
             case "Port ID":
-                return "P_id";
+                return "post_id";
         }
         return "";
     }

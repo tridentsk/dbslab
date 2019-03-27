@@ -24,40 +24,69 @@ public class CustomController {
     private TextArea customQryMsgText;
 
     @FXML
-    private void customQryExec() throws SQLException {
+    private void customQryExec() throws SQLException{
         String qry = customQryText.getText();
+
+        ResultSet rs=null;
+        try {
+            rs = dbExecuteQuery(qry);
+        }
+        catch(SQLException se){
+            int count = 1;
+            while (se != null) {
+                customQryMsgText.setText("SQLException " + count);
+                customQryMsgText.setText("Error Message: " + se.getMessage());
+                se = se.getNextException();
+                count++;
+            }
+        }
+
+        int j = fillTableWithRS(rs, customQryTable);
+        customQryMsgText.clear();
+
+        if(j==0) {
+            customQryMsgText.setText("No tuples matching your query were found");
+        }
+        else
+            customQryMsgText.setText(j + " tuples added.");
+
+
+
+    }
+
+    @FXML
+    static int fillTableWithRS(ResultSet rs, TableView table) throws SQLException{
+        table.getColumns().clear();
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
-        ResultSet rs = dbExecuteQuery(qry);
-        customQryTable.getColumns().clear();
         int colNum = rs.getMetaData().getColumnCount();
         for (int i = 0; i < colNum; i++) {
-            String name = rs.getMetaData().getColumnName(i+1);
+            String namex = rs.getMetaData().getColumnName(i+1);
             TableColumn tc = new TableColumn<>();
-            tc.setText(name);
+            tc.setText(namex);
             final int j = i;
             tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
                 public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                     return new SimpleStringProperty(param.getValue().get(j).toString());
-
                 }
             });
-            customQryTable.getColumns().add(tc);
-            System.out.println("Column:     " + name);
+            table.getColumns().add(tc);
+            System.out.println("Column:     " + namex);
         }
+        int j=0;
 
         while (rs.next()) {
+            j++;
             //Iterate Row
             ObservableList<String> row = FXCollections.observableArrayList();
             for (int i = 1; i <=rs.getMetaData().getColumnCount(); i++) {
                 //Iterate Column
                 row.add(rs.getString(i));
             }
-            System.out.println("Row [1] added " + row);
+
             data.add(row);
         }
 
-        customQryTable.setItems(data);
-
-
+        table.setItems(data);
+        return j;
     }
 }

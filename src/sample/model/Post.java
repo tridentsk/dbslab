@@ -1,28 +1,28 @@
 package sample.model;
 import javafx.beans.property.*;
 public class Post {
-    private SimpleIntegerProperty P_id;
+    private SimpleIntegerProperty post_id;
     private SimpleStringProperty P_name;
     private SimpleIntegerProperty salary;
     private SimpleIntegerProperty yrs_of_exp_req;
 
     public Post(){
-        this.P_id = new SimpleIntegerProperty();
+        this.post_id = new SimpleIntegerProperty();
         this.P_name = new SimpleStringProperty();
         this.salary = new SimpleIntegerProperty();
         this.yrs_of_exp_req = new SimpleIntegerProperty();
     }
 
     public int getP_id() {
-        return P_id.get();
+        return post_id.get();
     }
 
-    public void setP_id(int P_id){
-        this.P_id.set(P_id);
+    public void setP_id(int post_id){
+        this.post_id.set(post_id);
     }
 
     public SimpleIntegerProperty P_idProperty(){
-        return P_id;
+        return post_id;
     }
 
     public String getP_name() {

@@ -4,23 +4,23 @@ import javafx.beans.property.*;
 
 public class Crew {
     private SimpleIntegerProperty ID;
-    private SimpleStringProperty E_name;
+    private SimpleStringProperty crew_name;
     private SimpleIntegerProperty age;
     private SimpleIntegerProperty yrs_of_exp;
     private SimpleStringProperty sex;
-    private SimpleIntegerProperty S_id;
-    private SimpleIntegerProperty F_id;
-    private SimpleIntegerProperty P_id;
+    private SimpleIntegerProperty ship_id;
+    private SimpleIntegerProperty faction_id;
+    private SimpleIntegerProperty post_id;
 
     public Crew(){
         this.ID = new SimpleIntegerProperty();
-        this.E_name = new SimpleStringProperty();
+        this.crew_name = new SimpleStringProperty();
         this.age = new SimpleIntegerProperty();
         this.yrs_of_exp = new SimpleIntegerProperty();
         this.sex = new SimpleStringProperty();
-        this.S_id = new SimpleIntegerProperty();
-        this.F_id = new SimpleIntegerProperty();
-        this.P_id = new SimpleIntegerProperty();
+        this.ship_id = new SimpleIntegerProperty();
+        this.faction_id = new SimpleIntegerProperty();
+        this.post_id = new SimpleIntegerProperty();
     }
     //ID
     public int getID() {
@@ -35,16 +35,16 @@ public class Crew {
         return ID;
     }
 
-    public String getE_Name() {
-        return E_name.get();
+    public String getcrew_name() {
+        return crew_name.get();
     }
 
-    public void setE_Name(String name){
-        this.E_name.set(name);
+    public void setcrew_name(String name){
+        this.crew_name.set(name);
     }
 
-    public SimpleStringProperty E_NameProperty() {
-        return E_name  ;
+    public SimpleStringProperty crew_nameProperty() {
+        return crew_name  ;
     }
 
     public int getage() {
@@ -70,7 +70,7 @@ public class Crew {
     public SimpleIntegerProperty yrs_of_expProperty() { return yrs_of_exp; }
 
     public String getsex() {
-        return E_name.get();
+        return crew_name.get();
     }
 
     public void setsex(String sex){
@@ -81,39 +81,39 @@ public class Crew {
         return sex;
     }
 
-    public int getS_id() {
+    public int getship_id() {
         return ID.get();
     }
 
-    public void setS_id(int sid){
-        this.S_id.set(sid);
+    public void setship_id(int sid){
+        this.ship_id.set(sid);
     }
 
-    public SimpleIntegerProperty S_idProperty(){
-        return S_id;
+    public SimpleIntegerProperty ship_idProperty(){
+        return ship_id;
     }
 
-    public int getF_id() {
+    public int getfaction_id() {
         return ID.get();
     }
 
-    public void setF_id(int fid){
-        this.F_id.set(fid);
+    public void setfaction_id(int fid){
+        this.faction_id.set(fid);
     }
 
-    public SimpleIntegerProperty F_idProperty(){
-        return F_id;
+    public SimpleIntegerProperty faction_idProperty(){
+        return faction_id;
     }
 
-    public int getP_id() {
+    public int getpost_id() {
         return ID.get();
     }
 
-    public void setP_id(int pid){
-        this.P_id.set(pid);
+    public void setpost_id(int pid){
+        this.post_id.set(pid);
     }
 
-    public SimpleIntegerProperty P_idProperty(){
-        return P_id;
+    public SimpleIntegerProperty post_idProperty(){
+        return post_id;
     }
 }
