@@ -15,8 +15,8 @@ public class RootLayoutController {
     public void handleHelp(ActionEvent actionEvent) {
         Alert alert = new Alert (Alert.AlertType.INFORMATION);
         alert.setTitle("Program Information");
-        alert.setHeaderText("This is a sample JAVAFX application for SWTESTACADEMY!");
-        alert.setContentText("You can search, delete, update, insert a new Crew with this program.");
+        alert.setHeaderText("DBS PROJECT by Shrey and Ravi");
+        alert.setContentText("Megaprojects.");
         alert.show();
     }
 }

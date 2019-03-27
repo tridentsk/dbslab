@@ -26,6 +26,8 @@ import sample.util.DBUtil;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,78 +99,10 @@ public class CrewController {
     private TableView<Post> postTable;
     @FXML
     private AnchorPane postTab;
-
     @FXML
-    private void searchPost (ActionEvent actionEvent) throws SQLException {
-        try {
-            String paramval = postSearch.getValue();
-            String param = parsePostParam(paramval);
-            ObservableList<Post> pst = PostDAO.searchPost(postSearchText.getText(), param);
-            //Populate Post on TableView and Display on TextArea
-            populatePost(pst);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
+    private DatePicker voyageFromDate;
     @FXML
-    private void deletePost (ActionEvent actionEvent) throws SQLException {
-        try {
-            PostDAO.deletePost(postIDText.getText());
-            postTable.getItems().clear();
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
-
-    @FXML
-    private void insertPost (ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        try {
-            PostDAO.insertPost(getAllPostDetails());
-
-            ObservableList<Post> pst = PostDAO.searchPost(postIDText.getText(), "post_id");
-            populatePost(pst);
-            clearPostTexts();
-        } catch (SQLException e) {
-
-            throw e;
-        }
-    }
-    @FXML
-    private void updatePost(ActionEvent actionEvent) throws ClassNotFoundException{
-        try {
-            PostDAO.updatePost(getAllPostDetails());
-            ObservableList<Post> pst = PostDAO.searchPost(getAllPostDetails()[0], "post_id");
-            clearPostTexts();
-            populatePost(pst);
-        } catch (SQLException e) {
-
-        }
-    }
-
-    private String[] getAllPostDetails(){
-        String ar[] = new String[] {
-                postIDText.getText(),
-                postNameText.getText(),
-                postsalaryText.getText(),
-                postyrs_of_exp_reqText.getText()
-        };
-        return ar;
-    }
-
-    @FXML
-    private void clearPostTexts(){
-        for (Node node : postTab.getChildren()){
-            if(node instanceof TextField){
-                ((TextField) node).setText("");
-            }
-        }
-    }
-
-    private void populatePost (ObservableList<Post> pst){
-        postTable.setItems(pst);
-    }
+    private TableView voyageTable;
 
     @FXML
     private void initialize() {
@@ -199,23 +133,6 @@ public class CrewController {
             return row ;
         });
 
-
-        /*fkn.setOnMouseClicked((event) -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("../customWindow.fxml"));
-                AnchorPane customStage = (AnchorPane) fxmlLoader.load();
-                Scene scene = new Scene(customStage, 600, 400);
-                Stage stage = new Stage();
-                stage.setTitle("New Window");
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                Logger logger = Logger.getLogger(getClass().getName());
-                logger.log(Level.SEVERE, "Failed to create new Window.", e);
-            }
-        });*/
-
         ObservableList<String> paramlist = FXCollections.observableArrayList(
                 "ID",
                 "Name",
@@ -244,15 +161,8 @@ public class CrewController {
         postNameColumn.setCellValueFactory(cellData -> cellData.getValue().P_nameProperty());
         postSalaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
         postYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_exp_reqProperty().asObject());
-        /*paramlist = FXCollections.observableArrayList(
-                "Post ID",
-                "Name",
-                "Salary",
-                "Years of Exp"
-        );
 
-        postSearch.setItems(paramlist);
-        postSearch.setValue("Post ID");*/
+        voyageFromDate.setValue(LocalDate.of(1800, 1, 1));
     }
 
     @FXML
@@ -272,7 +182,7 @@ public class CrewController {
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
     }
-    private String parsePostParam(String param){
+    /*private String parsePostParam(String param){
         switch(param){
             case "Post ID":
                 return "post_id";
@@ -284,7 +194,7 @@ public class CrewController {
                 return "yrs_of_exp_req";
         }
         return "";
-    }
+    }*/
 
     @FXML
     private void searchCrew (ActionEvent actionEvent) throws SQLException {
@@ -356,43 +266,13 @@ public class CrewController {
             }
         }
     }
+
     private void populateCrew (ObservableList<Crew> emp){
         crewTable.setItems(emp);
     }
-/*
-    private void populateAndShowCrew(Crew crw){
-        if (crw != null) {
-            populateCrew(crw);
-        }
-    }*/
 
-   /* @FXML
-    private void initialize () {
-        crewIDColumn.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
-        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().crew_nameProperty());
-        crewAgeColumn.setCellValueFactory(cellData -> cellData.getValue().ageProperty().asObject());
-        crewYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_expProperty().asObject());
-        crewSexColumn.setCellValueFactory(cellData -> cellData.getValue().sexProperty());
-        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().ship_idProperty().asObject());
-        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().faction_idProperty().asObject());
-        crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
-
-        ObservableList<String> paramlist = FXCollections.observableArrayList(
-                "ID",
-                "Name",
-                "Years of Exp",
-                "Age",
-                "Sex",
-                "Ship ID",
-                "Faction ID",
-                "Port ID"
-        );
-        searchparam.setItems(paramlist);
-        searchparam.setValue("ID");
-    }*/
    @FXML
     private void crewShowAll() throws SQLException{
-
        String stmt = "select * from crew";
        ResultSet rs = DBUtil.dbExecuteQuery(stmt);
        ObservableList<Crew> crewList = CrewDAO.getCrewList(rs);
@@ -407,8 +287,12 @@ public class CrewController {
         ResultSet rs=null;
             rs = dbExecuteQuery(qry);
             CustomController.fillTableWithRS(rs, postTable);
+
        return;
+
+
     }
+
     @FXML
     private void crewSearchbyPost() throws SQLException{
         String qry = "select * from crew where post_id=" + "\'"+ Integer.toString(parsePost()) +"\'";
@@ -421,7 +305,6 @@ public class CrewController {
 
     private int parsePost(){
         String s = postSearch.getValue();
-
         switch(s){
             case "Captain":
                 return 1;
@@ -463,6 +346,89 @@ public class CrewController {
         return "";
     }
 
+    @FXML
+    private void showAllVoyagesUntil() throws SQLException{
+        LocalDate date = voyageFromDate.getValue();
+        String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        String qry = "select * from voyage where dateofj<\'" + dateString + "\'";
+        ResultSet rs = dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, voyageTable);
+       /* String year = date.getYear();*/
+    }
+
+    /*@FXML
+    private void searchPost (ActionEvent actionEvent) throws SQLException {
+        try {
+            String paramval = postSearch.getValue();
+            String param = parsePostParam(paramval);
+            ObservableList<Post> pst = PostDAO.searchPost(postSearchText.getText(), param);
+            //Populate Post on TableView and Display on TextArea
+            populatePost(pst);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    @FXML
+    private void deletePost (ActionEvent actionEvent) throws SQLException {
+        try {
+            PostDAO.deletePost(postIDText.getText());
+            postTable.getItems().clear();
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    @FXML
+    private void insertPost (ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        try {
+            PostDAO.insertPost(getAllPostDetails());
+
+            ObservableList<Post> pst = PostDAO.searchPost(postIDText.getText(), "post_id");
+            populatePost(pst);
+            clearPostTexts();
+        } catch (SQLException e) {
+
+            throw e;
+        }
+    }
+    @FXML
+    private void updatePost(ActionEvent actionEvent) throws ClassNotFoundException{
+        try {
+            PostDAO.updatePost(getAllPostDetails());
+            ObservableList<Post> pst = PostDAO.searchPost(getAllPostDetails()[0], "post_id");
+            clearPostTexts();
+            populatePost(pst);
+        } catch (SQLException e) {
+
+        }
+    }*/
+
+    /*private String[] getAllPostDetails(){
+        String ar[] = new String[] {
+                postIDText.getText(),
+                postNameText.getText(),
+                postsalaryText.getText(),
+                postyrs_of_exp_reqText.getText()
+        };
+        return ar;
+    }
+
+    @FXML
+    private void clearPostTexts(){
+        for (Node node : postTab.getChildren()){
+            if(node instanceof TextField){
+                ((TextField) node).setText("");
+            }
+        }
+    }
+
+    private void populatePost (ObservableList<Post> pst){
+        postTable.setItems(pst);
+    }*/
 
 }
+
+
 
