@@ -17,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import sample.model.Crew;
 import sample.model.CrewDAO;
 import sample.model.Post;
 import sample.model.PostDAO;
@@ -28,7 +27,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,67 +51,25 @@ public class CrewController {
     private TextField crewPIDText;
     @FXML
     private TextField crewFIDText;
-    /*@FXML
-    private TableColumn<Crew, Integer> crewIDColumn;
-    @FXML
-    private TableColumn<Crew, String> crewNameColumn;
-    @FXML
-    private TableColumn<Crew, Integer> crewAgeColumn;
-    @FXML
-    private TableColumn<Crew, Integer> crewYearsColumn;
-    @FXML
-    private TableColumn<Crew, Integer> crewSIDColumn;
-    @FXML
-    private TableColumn<Crew, Integer> crewFIDColumn;
-    @FXML
-    private TableColumn<Crew, Integer> crewPIDColumn;*/
     @FXML
     private ComboBox<String> searchparam;
-    @FXML
-    private TableColumn<Crew, String> crewSexColumn;
     @FXML
     private TableView crewTable;
     @FXML
     private AnchorPane crewTab;
     @FXML
-    private TextField postSearchText;
-    @FXML
-    private TextField postIDText;
-    @FXML
-    private TextField postNameText;
-    @FXML
-    private TextField postsalaryText;
-    @FXML
-    private TextField postyrs_of_exp_reqText;
-    @FXML
-    private TableColumn<Post, Integer> postIDColumn;
-    @FXML
-    private TableColumn<Post, String> postNameColumn;
-    @FXML
-    private TableColumn<Post, Integer> postSalaryColumn;
-    @FXML
-    private TableColumn<Post, Integer> postYearsColumn;
-    @FXML
     private ComboBox<String> postSearch;
     @FXML
     private TableView<Post> postTable;
     @FXML
-    private AnchorPane postTab;
-    @FXML
-    private DatePicker voyageFromDate, voyageFromDate1;
+    private DatePicker voyageFromDate, voyageFromDate1, voyagedatepicker;
     @FXML
     private TableView voyageTable;
+    @FXML
+    private ComboBox<String> voyagesource, voyagedest, chooseship, choosecargo;
 
     @FXML
     private void initialize() {
-        /*crewIDColumn.setCellValueFactory(cellData -> cellData.getValue().IDProperty().asObject());
-        crewNameColumn.setCellValueFactory(cellData -> cellData.getValue().crew_nameProperty());
-        crewAgeColumn.setCellValueFactory(cellData -> cellData.getValue().ageProperty().asObject());
-        crewYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_expProperty().asObject());
-        crewSexColumn.setCellValueFactory(cellData -> cellData.getValue().sexProperty());
-        crewSIDColumn.setCellValueFactory(cellData -> cellData.getValue().ship_idProperty().asObject());
-        crewFIDColumn.setCellValueFactory(cellData -> cellData.getValue().faction_idProperty().asObject());
-        crewPIDColumn.setCellValueFactory(cellData -> cellData.getValue().post_idProperty().asObject());*/
         crewTable.setRowFactory(tv -> {
             TableRow<ObservableList> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -131,7 +87,6 @@ public class CrewController {
                     crewFIDText.setText(rowData.get(5));
                 }
             });
-            /*return row ;*/
             return row;
         });
 
@@ -155,15 +110,64 @@ public class CrewController {
                 "Engineer",
                 "Seaman"
         );
+
+        ObservableList<String> portlist = FXCollections.observableArrayList(
+                "Piota",
+                "Macklow",
+                "Adria",
+                "Chillrend",
+                "Arthas",
+                "Shadowsong",
+                "Chauron",
+                "Zerus",
+                "Ventrue",
+                "Adun",
+                "Mar Sara",
+                "Vale"
+        );
+        ObservableList<String> shiplist = FXCollections.observableArrayList(
+                "Ainz",
+                "Alarak",
+                "Alladin",
+                "Alphonse",
+                "Argonaut",
+                "Compton",
+                "Crass",
+                "Crimson",
+                "Dauntless",
+                "Enthrall",
+                "Jackdaw",
+                "Lament",
+                "Leviathan",
+                "Meltdown",
+                "Olympus",
+                "Overdose",
+                "Overlord",
+                "Pride",
+                "Tempest",
+                "Westdale"
+        );
+
+        ObservableList<String> cargolist = FXCollections.observableArrayList(
+                "Food",
+                "Misc",
+                "Ore",
+                "Passenger",
+                "Timber",
+                "Vehicles",
+                "Weapons"
+
+        );
+
+
         searchparam.setItems(paramlist);
         searchparam.setValue("ID");
         postSearch.setItems(postlist);
+        voyagesource.setItems(portlist);
+        voyagedest.setItems(portlist);
         postSearch.setValue("Captain");
-        /*postIDColumn.setCellValueFactory(cellData -> cellData.getValue().P_idProperty().asObject());
-        postNameColumn.setCellValueFactory(cellData -> cellData.getValue().P_nameProperty());
-        postSalaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
-        postYearsColumn.setCellValueFactory(cellData -> cellData.getValue().yrs_of_exp_reqProperty().asObject());*/
-
+        chooseship.setItems(shiplist);
+        choosecargo.setItems(cargolist);
         voyageFromDate.setValue(LocalDate.of(1800, 1, 1));
         voyageFromDate1.setValue(LocalDate.of(1797, 1, 1));
     }
@@ -185,19 +189,6 @@ public class CrewController {
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
     }
-    /*private String parsePostParam(String param){
-        switch(param){
-            case "Post ID":
-                return "post_id";
-            case "Name":
-                return "P_name";
-            case "Salary":
-                return "salary";
-            case "Years of Exp":
-                return "yrs_of_exp_req";
-        }
-        return "";
-    }*/
 
     @FXML
     private void searchCrew (ActionEvent actionEvent) throws SQLException {
@@ -206,11 +197,9 @@ public class CrewController {
                 String param = parseParam(paramval);
                 String basic = "SELECT * FROM Crew where %s=%s";
                 String selectStmt = CrewDAO.formatCrewString(searchCrewByText.getText(), basic, param);
-                /*ObservableList<Crew> crw = CrewDAO.searchCrew(searchCrewByText.getText(), param);*/
                 ResultSet rs = dbExecuteQuery(selectStmt);
                 CustomController.fillTableWithRS(rs, crewTable);
-            //Populate Crew on TableView and Display on TextArea
-           // populateCrew(crw);
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -273,66 +262,32 @@ public class CrewController {
         }
     }
 
-    private void populateCrew (ObservableList<Crew> emp){
-        crewTable.setItems(emp);
-    }
-
    @FXML
     private void crewShowAll() throws SQLException{
        String stmt = "select * from crew order by ID";
-       /*ResultSet rs = DBUtil.dbExecuteQuery(stmt);
-       ObservableList<Crew> crewList = CrewDAO.getCrewList(rs);*/
        ResultSet rs = dbExecuteQuery(stmt);
        crewTable.getItems().clear();
        CustomController.fillTableWithRS(rs, crewTable);
-       //populateCrew(crewList);
-
     }
 
     @FXML
     private void postShowAll() throws SQLException{
         String qry = "select * from post";
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
         ResultSet rs=null;
             rs = dbExecuteQuery(qry);
             CustomController.fillTableWithRS(rs, postTable);
-
        return;
-
-
     }
 
     @FXML
     private void crewSearchbyPost() throws SQLException{
-        String qry = "select * from crew where post_id=" + "\'"+ Integer.toString(parsePost()) +"\'";
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        String qry = "select * from crew where post_name=" + "\'"+ postSearch.getValue() +"\'";
         ResultSet rs = null;
         rs = dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, postTable);
        return;
     }
 
-    private int parsePost(){
-        String s = postSearch.getValue();
-        switch(s){
-            case "Captain":
-                return 1;
-            case "1st Mate":
-                return 2;
-            case "Cook":
-                return 3;
-            case "Officer":
-                return 4;
-            case "Medic":
-                return 5;
-            case "Engineer":
-                return 6;
-            case "Seaman":
-                return 7;
-        }
-        return 0;
-
-    }
     private String parseParam(String param){
         switch(param){
             case "ID":
@@ -359,10 +314,10 @@ public class CrewController {
     private void showAllVoyagesUntil() throws SQLException{
         LocalDate date = voyageFromDate.getValue();
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-        String qry = "select * from voyage where dateofj<=\'" + dateString + "\'";
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type " +
+                "from voyage where dateofj<=\'" + dateString + "\'";
         ResultSet rs = dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, voyageTable);
-       /* String year = date.getYear();*/
     }
 
     @FXML
@@ -371,7 +326,8 @@ public class CrewController {
         LocalDate date2 = voyageFromDate1.getValue();
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
         String dateString2 = date2.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-        String qry = "select * from voyage where dateofj>= \'" + dateString2 + "\' and dateofj<=\'" + dateString + "\'";
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type "
+                + "from voyage where dateofj>= \'" + dateString2 + "\' and dateofj<=\'" + dateString + "\'";
         ResultSet rs = dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, voyageTable);
     }
@@ -380,84 +336,53 @@ public class CrewController {
     private void showAllVoyagesAfter() throws SQLException{
         LocalDate date = voyageFromDate1.getValue();
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-        String qry = "select * from voyage where dateofj>=\'" + dateString + "\'";
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type " +
+                " from voyage where dateofj>=\'" + dateString + "\'";
         ResultSet rs = dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, voyageTable);
-        /* String year = date.getYear();*/
-    }
-
-    /*@FXML
-    private void searchPost (ActionEvent actionEvent) throws SQLException {
-        try {
-            String paramval = postSearch.getValue();
-            String param = parsePostParam(paramval);
-            ObservableList<Post> pst = PostDAO.searchPost(postSearchText.getText(), param);
-            //Populate Post on TableView and Display on TextArea
-            populatePost(pst);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-    @FXML
-    private void deletePost (ActionEvent actionEvent) throws SQLException {
-        try {
-            PostDAO.deletePost(postIDText.getText());
-            postTable.getItems().clear();
-        } catch (SQLException e) {
-            throw e;
-        }
     }
 
     @FXML
-    private void insertPost (ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        try {
-            PostDAO.insertPost(getAllPostDetails());
-
-            ObservableList<Post> pst = PostDAO.searchPost(postIDText.getText(), "post_id");
-            populatePost(pst);
-            clearPostTexts();
-        } catch (SQLException e) {
-
-            throw e;
-        }
-    }
-    @FXML
-    private void updatePost(ActionEvent actionEvent) throws ClassNotFoundException{
-        try {
-            PostDAO.updatePost(getAllPostDetails());
-            ObservableList<Post> pst = PostDAO.searchPost(getAllPostDetails()[0], "post_id");
-            clearPostTexts();
-            populatePost(pst);
-        } catch (SQLException e) {
-
-        }
-    }*/
-
-    /*private String[] getAllPostDetails(){
-        String ar[] = new String[] {
-                postIDText.getText(),
-                postNameText.getText(),
-                postsalaryText.getText(),
-                postyrs_of_exp_reqText.getText()
-        };
-        return ar;
+    private void showVoyagesFrom() throws SQLException{
+        String source = voyagesource.getValue();
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type " +
+                " from voyage where source_name=\'"+ source +"\'";
+        ResultSet rs = dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, voyageTable);
     }
 
     @FXML
-    private void clearPostTexts(){
-        for (Node node : postTab.getChildren()){
-            if(node instanceof TextField){
-                ((TextField) node).setText("");
-            }
-        }
+    private void showVoyagesTo() throws SQLException{
+        String dest = voyagedest.getValue();
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type " +
+                " from voyage where dest_name=\'"+ dest +"\'";
+        ResultSet rs = dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, voyageTable);
     }
 
-    private void populatePost (ObservableList<Post> pst){
-        postTable.setItems(pst);
-    }*/
+    @FXML
+    private void showVoyagesBetweenPorts() throws SQLException{
+        String source = voyagesource.getValue();
+        String dest = voyagedest.getValue();
+        String qry = "select source_name, dest_name, to_char(dateofj, 'DD-MON-YYYY') as DATE_OF_JOURNEY, ship_name, cargo_type " +
+                " from voyage where source_name=\'"+ source +"\' and dest_name=\'"
+                + dest +"\'";
+        ResultSet rs = dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, voyageTable);
+    }
 
+    @FXML
+    private void insertVoyage() throws SQLException{
+        String source = voyagesource.getValue();
+        String dest = voyagedest.getValue();
+        String ship = chooseship.getValue();
+        String cargo = choosecargo.getValue();
+        LocalDate date = voyagedatepicker.getValue();
+        String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        String qry = "insert into voyage values(" + "'" + source + "','" + dest + "','" + dateString +
+                "','" + ship +"','" + cargo + "')";
+        DBUtil.dbExecuteUpdate(qry);
+    }
 }
 
 

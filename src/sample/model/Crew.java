@@ -1,3 +1,4 @@
+/*
 package sample.model;
 
 import javafx.beans.property.*;
@@ -117,3 +118,4 @@ public class Crew {
         return post_id;
     }
 }
+*/

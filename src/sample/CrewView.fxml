@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -88,14 +89,27 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DatePicker fx:id="voyageFromDate" layoutX="151.0" layoutY="264.0" promptText="Choose a date" />
+                        <DatePicker fx:id="voyageFromDate" layoutX="69.0" layoutY="260.0" promptText="Choose a date" />
                         <TableView fx:id="voyageTable" editable="true" layoutX="8.0" layoutY="8.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
-                        <Button fx:id="voyagesUntilbtn" layoutX="353.0" layoutY="264.0" mnemonicParsing="false" onAction="#showAllVoyagesUntil" text="Search" />
-                        <Label layoutX="14.0" layoutY="268.0" text="List all voyages before" />
-                        <DatePicker fx:id="voyageFromDate1" layoutX="151.0" layoutY="298.0" promptText="Choose a date" />
-                        <Button fx:id="voyagesAfterbtn1" layoutX="353.0" layoutY="298.0" mnemonicParsing="false" onAction="#showAllVoyagesAfter" text="Search" />
-                        <Label layoutX="14.0" layoutY="302.0" text="List all voyages after" />
-                        <Button fx:id="voyageBetweenbtn" layoutX="163.0" layoutY="331.0" mnemonicParsing="false" onAction="#showAllVoyagesBetween" text="Search voyages between " />
+                        <Button fx:id="voyagesUntilbtn" layoutX="271.0" layoutY="260.0" mnemonicParsing="false" onAction="#showAllVoyagesUntil" text="Search" />
+                        <Label layoutX="18.0" layoutY="264.0" text="Before" />
+                        <DatePicker fx:id="voyageFromDate1" layoutX="69.0" layoutY="302.0" promptText="Choose a date" />
+                        <Button fx:id="voyagesAfterbtn1" layoutX="271.0" layoutY="302.0" mnemonicParsing="false" onAction="#showAllVoyagesAfter" text="Search" />
+                        <Label layoutX="22.0" layoutY="306.0" text="After" />
+                        <Button fx:id="voyageBetweenbtn" layoutX="90.0" layoutY="337.0" mnemonicParsing="false" onAction="#showAllVoyagesBetween" text="Search between dates" />
+                        <Label layoutX="341.0" layoutY="264.0" text="From" />
+                        <Label layoutX="348.0" layoutY="305.0" text="To" />
+                        <ComboBox fx:id="voyagesource" layoutX="389.0" layoutY="260.0" prefHeight="25.0" prefWidth="173.0" promptText="Choose a source port" />
+                        <ComboBox fx:id="voyagedest" layoutX="390.0" layoutY="301.0" prefHeight="25.0" prefWidth="173.0" promptText="Destination" />
+                        <Button fx:id="voyagesourcebtn" layoutX="591.0" layoutY="260.0" mnemonicParsing="false" onAction="#showVoyagesFrom" text="Search" />
+                        <Button fx:id="voyagedestbtn" layoutX="591.0" layoutY="301.0" mnemonicParsing="false" onAction="#showVoyagesTo" text="Search" />
+                        <Button fx:id="voyagesPortsbtn" layoutX="410.0" layoutY="337.0" mnemonicParsing="false" onAction="#showVoyagesBetweenPorts" prefHeight="25.0" prefWidth="133.0" text="Search between ports" />
+                        <Separator layoutX="329.0" layoutY="248.0" orientation="VERTICAL" prefHeight="122.0" prefWidth="7.0" />
+                        <Label layoutX="145.0" layoutY="378.0" text="To add a voyage, choose source and destination from the dropdowns" />
+                        <DatePicker fx:id="voyagedatepicker" layoutX="56.0" layoutY="405.0" prefHeight="25.0" prefWidth="125.0" promptText="Date of voyage" />
+                        <ComboBox fx:id="chooseship" layoutX="204.0" layoutY="405.0" prefHeight="25.0" prefWidth="108.0" promptText="Choose ship" />
+                        <ComboBox fx:id="choosecargo" layoutX="328.0" layoutY="405.0" prefHeight="25.0" prefWidth="122.0" promptText="Choose cargo" />
+                        <Button fx:id="insertvoyagebtn" layoutX="470.0" layoutY="405.0" mnemonicParsing="false" onAction="#insertVoyage" prefHeight="25.0" prefWidth="120.0" text="Insert new voyage" />
                      </children></AnchorPane>
               </content>
             </Tab>
