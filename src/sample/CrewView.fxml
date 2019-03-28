@@ -19,18 +19,7 @@
             <content>
               <AnchorPane fx:id="crewTab" minHeight="0.0" minWidth="0.0" prefHeight="413.0" prefWidth="546.0">
                      <children>
-                        <TableView fx:id="crewTable" editable="true" layoutX="9.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true">
-                           <columns>
-                              <TableColumn fx:id="crewIDColumn" prefWidth="69.0" text="ID" />
-                              <TableColumn fx:id="crewNameColumn" prefWidth="109.0" text="Name" />
-                              <TableColumn fx:id="crewAgeColumn" prefWidth="75.0" text="Age" />
-                              <TableColumn fx:id="crewYearsColumn" prefWidth="70.0" text="Years" />
-                              <TableColumn fx:id="crewSexColumn" prefWidth="47.0" text="Sex" />
-                              <TableColumn fx:id="crewSIDColumn" prefWidth="105.0" text="Ship ID" />
-                              <TableColumn fx:id="crewFIDColumn" prefWidth="85.0" text="Faction ID" />
-                              <TableColumn fx:id="crewPIDColumn" prefWidth="75.0" text="Post ID" />
-                           </columns>
-                        </TableView>
+                        <TableView fx:id="crewTable" editable="true" layoutX="9.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
                           <TextField fx:id="crewIDText" layoutX="345.0" layoutY="258.0" prefHeight="25.0" prefWidth="67.0" promptText="Crew ID" />
                           <Button fx:id="deleteCrewbtn" layoutX="194.0" layoutY="394.0" mnemonicParsing="false" onAction="#deleteCrew" prefHeight="25.0" prefWidth="56.0" text="Delete" />
                           <Label layoutX="291.0" layoutY="262.0" text="Crew ID" />
@@ -99,9 +88,14 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DatePicker fx:id="voyageFromDate" layoutX="76.0" layoutY="317.0" promptText="Choose a date" />
+                        <DatePicker fx:id="voyageFromDate" layoutX="151.0" layoutY="264.0" promptText="Choose a date" />
                         <TableView fx:id="voyageTable" editable="true" layoutX="8.0" layoutY="8.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
-                        <Button fx:id="voyagesUntilbtn" layoutX="307.0" layoutY="292.0" mnemonicParsing="false" onAction="#showAllVoyagesUntil" text="Search" />
+                        <Button fx:id="voyagesUntilbtn" layoutX="353.0" layoutY="264.0" mnemonicParsing="false" onAction="#showAllVoyagesUntil" text="Search" />
+                        <Label layoutX="14.0" layoutY="268.0" text="List all voyages before" />
+                        <DatePicker fx:id="voyageFromDate1" layoutX="151.0" layoutY="298.0" promptText="Choose a date" />
+                        <Button fx:id="voyagesAfterbtn1" layoutX="353.0" layoutY="298.0" mnemonicParsing="false" onAction="#showAllVoyagesAfter" text="Search" />
+                        <Label layoutX="14.0" layoutY="302.0" text="List all voyages after" />
+                        <Button fx:id="voyageBetweenbtn" layoutX="163.0" layoutY="331.0" mnemonicParsing="false" onAction="#showAllVoyagesBetween" text="Search voyages between " />
                      </children></AnchorPane>
               </content>
             </Tab>

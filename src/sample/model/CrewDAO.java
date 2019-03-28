@@ -1,6 +1,7 @@
 package sample.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import sample.controller.CustomController;
 import sample.util.DBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ public class CrewDAO {
     //*******************************
     //SELECT a Crew member
     //*******************************
-    public static ObservableList<Crew> searchCrew (String input, String param) throws SQLException {
+    public static ResultSet searchCrew (String input, String param) throws SQLException {
         //Declare a SELECT statement
         String basic = "SELECT * FROM Crew where %s=%s";
         String selectStmt = formatCrewString(input, basic, param);
@@ -20,12 +21,12 @@ public class CrewDAO {
         try {
             //Get ResultSet from dbExecuteQuery method
             ResultSet rsEmp = DBUtil.dbExecuteQuery(selectStmt);
-
+            return rsEmp;
             //Send ResultSet to the getCrewFromResultSet method and get Crew object
-            ObservableList<Crew> crewList = getCrewList(rsEmp);
-            /*Crew crew = getCrewFromResultSet(rsEmp);
-            //Return Crew object*/
-            return crewList;
+            /*ObservableList<Crew> crewList = getCrewList(rsEmp);
+            *//*Crew crew = getCrewFromResultSet(rsEmp);
+            //Return Crew object*//*
+            return crewList;*/
         } catch (SQLException e) {
             System.out.println("While searching an Crew with " + param + " id, an error occurred: " + e);
             //Return exception
@@ -61,8 +62,8 @@ public class CrewDAO {
                 "BEGIN\n" +
                         "INSERT INTO Crew\n" +
                         "VALUES\n" +
-                        "("+details[0]+", '"+details[1]+"',"+details[2]+","+ details[3]+ ","+details[4]+","
-                            +details[5]+","+details[6]+",'"+details[7]+"');\n" +
+                        "("+details[0]+", '"+details[1]+"',"+details[2]+","+ details[3]+ ",\'"+details[4]+"\',\'"
+                            +details[5]+"\',\'"+details[6]+"\','"+details[7]+"');\n" +
                         "END;";
         System.out.println(updateStmt);
         //Execute DELETE operation
@@ -101,9 +102,9 @@ public class CrewDAO {
             crw.setage(rs.getInt("AGE"));
             crw.setyrs_of_exp(rs.getInt("YRS_OF_EXP"));
             crw.setsex(rs.getString("SEX"));
-            crw.setship_id(rs.getInt("ship_id"));
-            crw.setfaction_id(rs.getInt("faction_id"));
-            crw.setpost_id(rs.getInt("post_id"));
+            crw.setship_id(rs.getInt("ship_name"));
+            crw.setfaction_id(rs.getInt("faction_name"));
+            crw.setpost_id(rs.getInt("post_name"));
             crewList.add(crw);
         }
         return crewList;
@@ -114,12 +115,12 @@ public class CrewDAO {
         switch(param){
             case "ID":
             case "yrs_of_exp":
-            case "ship_id":
             case "age":
-            case "faction_id":
-            case "post_id":
                 selectStmt = String.format(basic, param, Integer.parseInt(input));
                 break;
+            case "ship_name":
+            case "faction_name":
+            case "post_name":
             case "crew_name":
             case "sex":
                 selectStmt = String.format(basic, param, "\'"+ input + "\'");
