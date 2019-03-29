@@ -7,11 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CrewDAO {
-    //*******************************
-    //SELECT a Crew member
-    //*******************************
+
     public static ResultSet searchCrew (String input, String param) throws SQLException {
-        //Declare a SELECT statement
+
         String basic = "SELECT * FROM Crew where %s=%s";
         String selectStmt = formatCrewString(input, basic, param);
         try {
@@ -25,7 +23,6 @@ public class CrewDAO {
     }
 
     public static void deleteCrew (String ID) throws SQLException{
-        //Declare a DELETE statement
         String updateStmt =
                 "BEGIN\n" +
                         "   DELETE FROM Crew\n" +
@@ -63,8 +60,27 @@ public class CrewDAO {
 
     public static void updateCrew (String ... details) throws SQLException, ClassNotFoundException{
         //Declare a UPDATE statement
-        deleteCrew(details[0]);
-        insertCrew(details);
+        /*deleteCrew(details[0]);
+        insertCrew(details);*/
+
+        String update = "BEGIN " +
+                " UPDATE CREW " +
+                " SET " + "crew_name='" + details[1] +"',"
+                    + "age=" + details[2] + "," +
+                    "yrs_of_exp=" +details[3] + "," +
+                    "ship_name='" + details[4] + "'," +
+                    "faction_name='" + details[5] + "'," +
+                    "post_name='" + details[6] + "'," +
+                    "sex='" + details[7] + "' " +
+                " WHERE ID=" + details[0] + "; END;";
+                System.out.println(update);
+        try {
+            DBUtil.dbExecuteUpdate(update);
+            DBUtil.dbExecuteUpdate("commit");
+        } catch (SQLException e) {
+            System.out.print("Error occurred while updating " + e);
+            throw e;
+        }
     }
 
     public static String formatCrewString(String input, String basic, String param){

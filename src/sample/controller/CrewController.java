@@ -60,13 +60,17 @@ public class CrewController {
     @FXML
     private ComboBox<String> postSearch;
     @FXML
-    private TableView<Post> postTable;
+    private TableView postTable;
     @FXML
     private DatePicker voyageFromDate, voyageFromDate1, voyagedatepicker;
     @FXML
     private TableView voyageTable;
     @FXML
     private ComboBox<String> voyagesource, voyagedest, chooseship, choosecargo;
+    @FXML
+    private TableView shipTable;
+    @FXML
+    private ComboBox<String> choosefaction;
 
     @FXML
     private void initialize() {
@@ -159,6 +163,13 @@ public class CrewController {
 
         );
 
+        ObservableList<String> factionlist = FXCollections.observableArrayList(
+                "Doomsgate",
+                        "Templars",
+                "Wintersong",
+                "Vortex",
+                "Symphian Order"
+        );
 
         searchparam.setItems(paramlist);
         searchparam.setValue("ID");
@@ -168,6 +179,7 @@ public class CrewController {
         postSearch.setValue("Captain");
         chooseship.setItems(shiplist);
         choosecargo.setItems(cargolist);
+        choosefaction.setItems(factionlist);
         voyageFromDate.setValue(LocalDate.of(1800, 1, 1));
         voyageFromDate1.setValue(LocalDate.of(1797, 1, 1));
     }
@@ -190,6 +202,7 @@ public class CrewController {
         }
     }
 
+
     @FXML
     private void searchCrew (ActionEvent actionEvent) throws SQLException {
         try {
@@ -199,8 +212,6 @@ public class CrewController {
                 String selectStmt = CrewDAO.formatCrewString(searchCrewByText.getText(), basic, param);
                 ResultSet rs = dbExecuteQuery(selectStmt);
                 CustomController.fillTableWithRS(rs, crewTable);
-
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
@@ -218,15 +229,15 @@ public class CrewController {
     }
 
     @FXML
-    private void insertCrew (ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+    private void insertCrew (ActionEvent actionEvent) throws ClassNotFoundException {
         try {
             CrewDAO.insertCrew(getAllDetails());
             ResultSet rs = CrewDAO.searchCrew(crewIDText.getText(), "ID");
             CustomController.fillTableWithRS(rs, crewTable);
             clearTexts();
         } catch (SQLException e) {
-
-            throw e;
+            DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
+                    "Error: \n" + e.getMessage());
         }
     }
 
@@ -238,7 +249,8 @@ public class CrewController {
             clearTexts();
             CustomController.fillTableWithRS(rs, crewTable);
         } catch (SQLException e) {
-
+                DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
+                        "Error: \n" + e.getMessage());
         }
     }
     private String[] getAllDetails(){
@@ -281,7 +293,7 @@ public class CrewController {
 
     @FXML
     private void crewSearchbyPost() throws SQLException{
-        String qry = "select * from crew where post_name=" + "\'"+ postSearch.getValue() +"\'";
+        String qry = "select * from crew where post_name=" + "\'"+ postSearch.getValue() +"\' order by ID";
         ResultSet rs = null;
         rs = dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, postTable);
@@ -381,7 +393,29 @@ public class CrewController {
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
         String qry = "insert into voyage values(" + "'" + source + "','" + dest + "','" + dateString +
                 "','" + ship +"','" + cargo + "')";
-        DBUtil.dbExecuteUpdate(qry);
+        try{
+            DBUtil.dbExecuteUpdate(qry);
+        }
+        catch(SQLException e){
+            DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
+                    "Error: \n" + e.getMessage());
+        }
+        showVoyagesBetweenPorts();
+    }
+
+    @FXML
+    private void searchShipsByFaction() throws SQLException{
+        String faction = choosefaction.getValue();
+        String qry = "select * from ship where faction_name='" + faction + "'";
+        ResultSet rs = DBUtil.dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, shipTable);
+    }
+
+    @FXML
+    private void showAllShips() throws SQLException{
+        String qry = "select * from ship";
+        ResultSet rs = DBUtil.dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, shipTable);
     }
 }
 

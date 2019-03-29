@@ -1,6 +1,8 @@
 package sample.util;
 
 import com.sun.rowset.CachedRowSetImpl;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 
@@ -95,4 +97,14 @@ public class DBUtil {
             dbDisconnect();
         }
     }
+
+    public static void throwError(String brief, String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(brief);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
 }

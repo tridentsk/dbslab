@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,31 +21,32 @@
                      <children>
                         <TableView fx:id="crewTable" editable="true" layoutX="9.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
                           <TextField fx:id="crewIDText" layoutX="345.0" layoutY="258.0" prefHeight="25.0" prefWidth="67.0" promptText="Crew ID" />
-                          <Button fx:id="deleteCrewbtn" layoutX="194.0" layoutY="394.0" mnemonicParsing="false" onAction="#deleteCrew" prefHeight="25.0" prefWidth="56.0" text="Delete" />
+                          <Button fx:id="deleteCrewbtn" layoutX="465.0" layoutY="409.0" mnemonicParsing="false" onAction="#deleteCrew" prefHeight="25.0" prefWidth="56.0" text="Delete" />
                           <Label layoutX="291.0" layoutY="262.0" text="Crew ID" />
-                          <TextField fx:id="searchCrewByText" layoutX="19.0" layoutY="335.0" prefHeight="25.0" prefWidth="120.0" promptText="Enter search key" />
-                          <Button fx:id="insertCrewbtn" layoutX="32.0" layoutY="394.0" mnemonicParsing="false" onAction="#insertCrew" text="Add Crew" />
+                          <TextField fx:id="searchCrewByText" layoutX="32.0" layoutY="345.0" prefHeight="25.0" prefWidth="120.0" promptText="Enter search key" />
+                          <Button fx:id="insertCrewbtn" layoutX="510.0" layoutY="370.0" mnemonicParsing="false" onAction="#insertCrew" text="Add Crew" />
                             <TextField fx:id="crewNameText" layoutX="345.0" layoutY="295.0" prefHeight="25.0" prefWidth="67.0" promptText="Name" />
                             <Label layoutX="296.0" layoutY="297.0" text="Name" />
-                          <Button fx:id="updateCrewBtn" layoutX="115.0" layoutY="394.0" mnemonicParsing="false" onAction="#updateCrew" prefHeight="25.0" prefWidth="67.0" text="Update" />
-                          <Button fx:id="searchCrewbtn" layoutX="154.0" layoutY="335.0" mnemonicParsing="false" onAction="#searchCrew" prefHeight="25.0" prefWidth="56.0" text="Search" />
+                          <Button fx:id="updateCrewBtn" layoutX="553.0" layoutY="409.0" mnemonicParsing="false" onAction="#updateCrew" prefHeight="25.0" prefWidth="67.0" text="Update" />
+                          <Button fx:id="searchCrewbtn" layoutX="173.0" layoutY="345.0" mnemonicParsing="false" onAction="#searchCrew" prefHeight="25.0" prefWidth="56.0" text="Search" />
                         <TextField fx:id="crewYrsText" layoutX="345.0" layoutY="370.0" prefHeight="25.0" prefWidth="66.0" promptText="Years" />
                         <TextField fx:id="crewSexText" layoutX="345.0" layoutY="404.0" prefHeight="25.0" prefWidth="66.0" promptText="Sex" />
-                        <TextField fx:id="crewSIDText" layoutX="489.0" layoutY="262.0" prefHeight="25.0" prefWidth="66.0" promptText="Ship ID" />
-                        <Label layoutX="440.0" layoutY="264.0" text="Ship ID" />
-                        <Label layoutX="296.0" layoutY="406.0" text="Sex" />
-                        <Label layoutX="296.0" layoutY="370.0" text="Years" />
-                        <TextField fx:id="crewFIDText" layoutX="489.0" layoutY="297.0" prefHeight="25.0" prefWidth="66.0" promptText="Faction ID" />
-                        <Label layoutX="428.0" layoutY="301.0" text="Faction ID" />
-                        <TextField fx:id="crewPIDText" layoutX="489.0" layoutY="334.0" prefHeight="25.0" prefWidth="66.0" promptText="Post ID" />
-                        <Label layoutX="441.0" layoutY="338.0" text="Post ID" />
-                        <ComboBox fx:id="searchparam" layoutX="79.0" layoutY="298.0" prefWidth="150.0" />
-                        <TextField fx:id="crewAgeText" layoutX="344.0" layoutY="335.0" prefHeight="25.0" prefWidth="70.0" promptText="Age" />
+                        <TextField fx:id="crewSIDText" layoutX="511.0" layoutY="260.0" prefHeight="25.0" prefWidth="66.0" promptText="Ship" />
+                        <Label layoutX="440.0" layoutY="264.0" text="Ship Name" />
+                        <Label layoutX="303.0" layoutY="408.0" text="Sex" />
+                        <Label layoutX="298.0" layoutY="374.0" text="Years" />
+                        <TextField fx:id="crewFIDText" layoutX="508.0" layoutY="297.0" prefHeight="25.0" prefWidth="72.0" promptText="Faction" />
+                        <Label layoutX="428.0" layoutY="301.0" text="Faction Name" />
+                        <TextField fx:id="crewPIDText" layoutX="511.0" layoutY="333.0" prefHeight="25.0" prefWidth="66.0" promptText="Post" />
+                        <Label layoutX="458.0" layoutY="337.0" text="Post" />
+                        <ComboBox fx:id="searchparam" layoutX="79.0" layoutY="308.0" prefWidth="150.0" />
+                        <TextField fx:id="crewAgeText" layoutX="344.0" layoutY="335.0" prefHeight="25.0" prefWidth="68.0" promptText="Age" />
                         <Label layoutX="301.0" layoutY="339.0" text="Age" />
-                        <Label layoutX="14.0" layoutY="302.0" text="Search by" />
-                        <Button fx:id="clearCrewbtn" layoutX="501.0" layoutY="375.0" mnemonicParsing="false" onAction="#clearTexts" text="Clear" />
+                        <Label layoutX="14.0" layoutY="312.0" text="Search by" />
+                        <Button fx:id="clearCrewbtn" layoutX="598.0" layoutY="258.0" mnemonicParsing="false" onAction="#clearTexts" text="Clear" />
                         <Button fx:id="crewShowAllbtn" layoutX="100.0" layoutY="258.0" mnemonicParsing="false" onAction="#crewShowAll" text="Show All" />
-                        <Button fx:id="fkn" layoutX="476.0" layoutY="411.0" mnemonicParsing="false" onAction="#openCustomWindow" text="Custom Query" />
+                        <Button fx:id="fkn" layoutX="85.0" layoutY="397.0" mnemonicParsing="false" onAction="#openCustomWindow" text="Custom Query" />
+                        <Separator layoutX="271.0" layoutY="251.0" orientation="VERTICAL" prefHeight="188.0" prefWidth="6.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -55,16 +55,9 @@
             <content>
               <AnchorPane fx:id="postTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="postTable" editable="true" layoutX="8.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true">
-                           <columns>
-                              <TableColumn fx:id="postIDColumn" prefWidth="69.0" text="ID" />
-                              <TableColumn fx:id="postNameColumn" prefWidth="109.0" text="Name" />
-                              <TableColumn fx:id="postSalaryColumn" prefWidth="70.0" text="Salary" />
-                              <TableColumn fx:id="postYearsColumn" prefWidth="81.0" text="Years Reqd" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="postShowAllbtn" layoutX="20.0" layoutY="284.0" mnemonicParsing="false" onAction="#postShowAll" text="List available posts" />
-                        <Button fx:id="crewSearchbyPostbtn" layoutX="189.0" layoutY="369.0" mnemonicParsing="false" onAction="#crewSearchbyPost" text="Search" />
+                        <TableView fx:id="postTable" editable="true" layoutX="8.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
+                        <Button fx:id="postShowAllbtn" layoutX="25.0" layoutY="261.0" mnemonicParsing="false" onAction="#postShowAll" text="List available posts" />
+                        <Button fx:id="crewSearchbyPostbtn" layoutX="307.0" layoutY="335.0" mnemonicParsing="false" onAction="#crewSearchbyPost" text="Search" />
                         <ComboBox fx:id="postSearch" layoutX="140.0" layoutY="335.0" prefWidth="150.0" />
                         <Label layoutX="20.0" layoutY="339.0" text="Search crew by post" />
                      </children></AnchorPane>
@@ -72,17 +65,14 @@
           </Tab>
             <Tab text="Ship">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab text="Port">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab text="Cargo">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="shipTable" editable="true" layoutX="8.0" layoutY="7.0" prefHeight="234.0" prefWidth="650.0" tableMenuButtonVisible="true" />
+                        <ComboBox fx:id="choosefaction" layoutX="145.0" layoutY="294.0" prefWidth="150.0" promptText="Choose faction" />
+                        <Label layoutX="14.0" layoutY="298.0" text="List all ships owned by " />
+                        <Button fx:id="allshipsbtn" layoutX="35.0" layoutY="256.0" mnemonicParsing="false" onAction="#showAllShips" text="List all ships" />
+                        <Button fx:id="searchshipbtn" layoutX="307.0" layoutY="294.0" mnemonicParsing="false" onAction="#searchShipsByFaction" text="Search" />
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Voyage">
@@ -96,14 +86,14 @@
                         <DatePicker fx:id="voyageFromDate1" layoutX="69.0" layoutY="302.0" promptText="Choose a date" />
                         <Button fx:id="voyagesAfterbtn1" layoutX="271.0" layoutY="302.0" mnemonicParsing="false" onAction="#showAllVoyagesAfter" text="Search" />
                         <Label layoutX="22.0" layoutY="306.0" text="After" />
-                        <Button fx:id="voyageBetweenbtn" layoutX="90.0" layoutY="337.0" mnemonicParsing="false" onAction="#showAllVoyagesBetween" text="Search between dates" />
+                        <Button fx:id="voyageBetweenbtn" layoutX="90.0" layoutY="339.0" mnemonicParsing="false" onAction="#showAllVoyagesBetween" text="Search between dates" />
                         <Label layoutX="341.0" layoutY="264.0" text="From" />
                         <Label layoutX="348.0" layoutY="305.0" text="To" />
                         <ComboBox fx:id="voyagesource" layoutX="389.0" layoutY="260.0" prefHeight="25.0" prefWidth="173.0" promptText="Choose a source port" />
                         <ComboBox fx:id="voyagedest" layoutX="390.0" layoutY="301.0" prefHeight="25.0" prefWidth="173.0" promptText="Destination" />
                         <Button fx:id="voyagesourcebtn" layoutX="591.0" layoutY="260.0" mnemonicParsing="false" onAction="#showVoyagesFrom" text="Search" />
                         <Button fx:id="voyagedestbtn" layoutX="591.0" layoutY="301.0" mnemonicParsing="false" onAction="#showVoyagesTo" text="Search" />
-                        <Button fx:id="voyagesPortsbtn" layoutX="410.0" layoutY="337.0" mnemonicParsing="false" onAction="#showVoyagesBetweenPorts" prefHeight="25.0" prefWidth="133.0" text="Search between ports" />
+                        <Button fx:id="voyagesPortsbtn" layoutX="409.0" layoutY="339.0" mnemonicParsing="false" onAction="#showVoyagesBetweenPorts" prefHeight="25.0" prefWidth="133.0" text="Search between ports" />
                         <Separator layoutX="329.0" layoutY="248.0" orientation="VERTICAL" prefHeight="122.0" prefWidth="7.0" />
                         <Label layoutX="145.0" layoutY="378.0" text="To add a voyage, choose source and destination from the dropdowns" />
                         <DatePicker fx:id="voyagedatepicker" layoutX="56.0" layoutY="405.0" prefHeight="25.0" prefWidth="125.0" promptText="Date of voyage" />
