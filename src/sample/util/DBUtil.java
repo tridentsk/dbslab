@@ -1,7 +1,6 @@
 package sample.util;
 
 import com.sun.rowset.CachedRowSetImpl;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 
 import java.sql.*;

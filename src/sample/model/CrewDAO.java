@@ -1,7 +1,4 @@
 package sample.model;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import sample.controller.CustomController;
 import sample.util.DBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
