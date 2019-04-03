@@ -1,5 +1,6 @@
 package sample.controller;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,15 +13,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sample.model.CrewDAO;
 import sample.util.DBUtil;
+
+import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static sample.util.DBUtil.dbExecuteQuery;
+import static sample.util.DBUtil.reqConfirmation;
 
 public class CrewController {
     @FXML
@@ -56,14 +61,16 @@ public class CrewController {
     @FXML
     private TableView voyageTable;
     @FXML
-    private ComboBox<String> voyagesource, voyagedest, chooseship, choosecargo;
+    private ComboBox<String> voyagesource, voyagedest, chooseship, choosecargo, shipselect;
     @FXML
     private TableView shipTable;
     @FXML
     private ComboBox<String> choosefaction;
 
+    static int IDcount;
+
     @FXML
-    private void initialize() {
+    private void initialize() throws SQLException{
         crewTable.setRowFactory(tv -> {
             TableRow<ObservableList> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -97,7 +104,7 @@ public class CrewController {
 
         ObservableList<String> postlist = FXCollections.observableArrayList(
           "Captain",
-          "1st Mate",
+                "1st Mate",
                 "Cook",
                 "Officer",
                 "Medic",
@@ -170,8 +177,17 @@ public class CrewController {
         chooseship.setItems(shiplist);
         choosecargo.setItems(cargolist);
         choosefaction.setItems(factionlist);
+        shipselect.setItems(shiplist);
         voyageFromDate.setValue(LocalDate.of(1800, 1, 1));
         voyageFromDate1.setValue(LocalDate.of(1797, 1, 1));
+
+        String getID = "select ID from crew where ID>= all (select ID from crew)";
+        ResultSet rs = DBUtil.dbExecuteQuery(getID);
+        System.out.println(rs.next());
+        IDcount = Integer.parseInt(rs.getString(1));
+        IDcount++;
+        crewIDText.setText(Integer.toString(IDcount));
+        crewIDText.setDisable(true);
     }
 
     @FXML
@@ -211,8 +227,19 @@ public class CrewController {
     @FXML
     private void deleteCrew (ActionEvent actionEvent) throws SQLException {
         try {
-            CrewDAO.deleteCrew(crewIDText.getText());
+            Optional<ButtonType> op = DBUtil.reqConfirmation();
+            if(!op.isPresent())
+                DBUtil.notPerformed("The operation did not complete successfully.");
+            else if(op.get() == ButtonType.OK)
+                CrewDAO.deleteCrew(crewIDText.getText());
+            else if(op.get() == ButtonType.CANCEL)
+                DBUtil.notPerformed("The operation did not complete successfully.");
+            else
+                System.out.println("Nothing happened");
+
             crewTable.getItems().clear();
+            clearTexts();
+            crewShowAll();
         } catch (SQLException e) {
             throw e;
         }
@@ -225,9 +252,10 @@ public class CrewController {
             ResultSet rs = CrewDAO.searchCrew(crewIDText.getText(), "ID");
             CustomController.fillTableWithRS(rs, crewTable);
             clearTexts();
+            IDcount++;
+            crewIDText.setText(Integer.toString(IDcount));
         } catch (SQLException e) {
-            DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
-                    "Error: \n" + e.getMessage());
+            DBUtil.throwError("Please check the details you have entered");
         }
     }
 
@@ -239,8 +267,7 @@ public class CrewController {
             clearTexts();
             CustomController.fillTableWithRS(rs, crewTable);
         } catch (SQLException e) {
-                DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
-                        "Error: \n" + e.getMessage());
+            DBUtil.throwError("Please check the details you have entered");
         }
     }
     private String[] getAllDetails(){
@@ -257,11 +284,12 @@ public class CrewController {
     }
     @FXML
     private void clearTexts(){
-        for (Node node : crewTab.getChildren()){
-            if(node instanceof TextField){
+        for (Node node : crewTab.getChildren()) {
+            if (node instanceof TextField) {
                 ((TextField) node).setText("");
             }
         }
+        crewIDText.setText(Integer.toString(IDcount));
     }
 
    @FXML
@@ -387,8 +415,7 @@ public class CrewController {
             DBUtil.dbExecuteUpdate(qry);
         }
         catch(SQLException e){
-            DBUtil.throwError("An SQL Exception occured. Please check the details you have entered",
-                    "Error: \n" + e.getMessage());
+            DBUtil.throwError("Please check the details you have entered");
         }
         showVoyagesBetweenPorts();
     }
@@ -404,6 +431,22 @@ public class CrewController {
     @FXML
     private void showAllShips() throws SQLException{
         String qry = "select * from ship";
+        ResultSet rs = DBUtil.dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, shipTable);
+    }
+
+    @FXML
+    private void showSameFactionShips() throws SQLException{
+        String qry = "select crew.crew_name, ship.ship_name, ship.faction_name" +
+                "from ship,crew where crew.ship_name = ship.ship_name and crew.faction_name = ship.faction_name";
+        ResultSet rs = DBUtil.dbExecuteQuery(qry);
+        CustomController.fillTableWithRS(rs, shipTable);
+    }
+    @FXML
+    private void showCrewFromShip() throws SQLException{
+        String ship = shipselect.getValue();
+        String qry = "select crew.crew_name, crew.post_name " +
+                " from ship,crew where crew.ship_name = ship.ship_name and ship.ship_name=\'" + ship + "\'";
         ResultSet rs = DBUtil.dbExecuteQuery(qry);
         CustomController.fillTableWithRS(rs, shipTable);
     }

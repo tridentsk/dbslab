@@ -2,8 +2,10 @@ package sample.util;
 
 import com.sun.rowset.CachedRowSetImpl;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.sql.*;
+import java.util.Optional;
 
 
 public class DBUtil {
@@ -97,12 +99,26 @@ public class DBUtil {
         }
     }
 
-    public static void throwError(String brief, String message){
+    public static void throwError(String brief){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(brief);
-        alert.setContentText(message);
+        alert.setContentText("One or more details entered is invalid. The chosen faction, ship or post does not exist");
+        alert.showAndWait();
+    }
 
+    public static Optional<ButtonType> reqConfirmation(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setContentText("Are you sure you want to remove this employee from the database?");
+         return alert.showAndWait();
+    }
+
+    public static void notPerformed(String brief){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(brief);
+        alert.setContentText("Action cancelled by user. The employee was not removed. ");
         alert.showAndWait();
     }
 
