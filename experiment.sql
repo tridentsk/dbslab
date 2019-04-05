@@ -6,7 +6,10 @@ drop table Class;
 drop table Post;
 drop table Cargo;
 drop table Faction;
+drop table auth_user;
 
+create table auth_user(username varchar(10) primary key,
+                        passwd varchar(20));
 
 create table Faction(faction_name varchar (20) primary key, 
                     Leader varchar(15), 

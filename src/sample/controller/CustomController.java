@@ -64,11 +64,8 @@ public class CustomController {
             TableColumn tc = new TableColumn<>();
             tc.setText(namex);
             final int j = i;
-            tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                    return new SimpleStringProperty(param.getValue().get(j).toString());
-                }
-            });
+            tc.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>)
+                    param -> new SimpleStringProperty(param.getValue().get(j).toString()));
             table.getColumns().add(tc);
             System.out.println("Column:     " + namex);
         }

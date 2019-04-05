@@ -1,3 +1,6 @@
+
+insert into auth_user values('shrey', 'p0laris');
+
 insert into Faction values('Doomsgate', 'Charlemagne', 'Atlantis');
 insert into Faction values('Templars', 'Artanis', 'Aiur');
 insert into Faction values('Wintersong', 'Wolf', 'Dorado');

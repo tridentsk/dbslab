@@ -103,7 +103,8 @@ public class DBUtil {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(brief);
-        alert.setContentText("One or more details entered is invalid. The chosen faction, ship or post does not exist");
+        alert.setContentText("One or more details entered is invalid. The chosen faction, ship or post does not exist, " +
+                " or the ID is already in use.");
         alert.showAndWait();
     }
 
